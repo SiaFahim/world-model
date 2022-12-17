@@ -54,4 +54,21 @@ class ConvVAE(object):
             h = tf.layers.conv2d_transpose(h, 32, 6, strides=2, activation=tf.nn.relu, name='dec_deconv3')
             self.y = tf.layers.conv2d_transpose(h, 3, 6, strides=2, activation=tf.nn.sigmoid, name='dec_deconv4')
 
+            # Implementing the training operations
+            if self.is_training:
+                self.global_step = tf.Variable(0,, name='global_step', trainable=False)
+
+                # Defining the loss function
+                self.r_loss = tf.reduced_sum(tf.square(self.x - self.y), reduction_indices= [1,2,3]) # calculating the squered error between the input and the output on all the dimentions
+                self.r_loss = tf.reduce_mean(self.r_loss) # calculating the mean of the squared error
+                self.kl_loss = -0.5 * tf.reduce_sum((1 + self.logvar - tf.square(self.mu) - tf.exp(self.logvar)), reduction_indices = 1) # calculating the KL divergence
+                self.kl_loss = tf.maximum(self.kl_loss, self.kl_tolerance * self.z_size) # calculating the KL divergence
+                self.kl_loss = tf.reduce_mean(self.kl_loss) # calculating the mean of the KL divergence
+                self.loss = self.r_loss + self.kl_loss # calculating the total loss
+                self.lr = tf.Variable(self.learning_rate, trainable=False) # defining the learning rate
+                self.optimizer = tf.train.AdamOptimizer(self.lr) # defining the optimizer
+                grads = self.optimizer.compute_gradients(self.loss) # calculating the gradients
+                self.train_op = self.optimizer.apply_gradients(grads, global_step=self.global_step, name='train_step') # applying the gradients
+            self.init = tf.global_variables_initializer() # initializing all the variables
             
+
