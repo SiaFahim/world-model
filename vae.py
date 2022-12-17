@@ -25,3 +25,16 @@ class ConvVAE(object):
                 tf.logging.info('Model using GPU.')
                 self._build_graph()
         self._init_session() 
+
+    # Making a method that creates the VAE model architecture itself
+    def _build_graph(self):
+        self.g = tf.Graph()
+        with self.g.as_default():
+            self.x = tf.placeholder(tf.float32, [None, 64, 64, 3], name='x')
+            
+            # Building the encoder part of VAE
+            h = tf.layers.conv2d(self.x, 32, 4, strides=2, activation=tf.nn.relu, name='enc_conv1')
+            h = tf.layers.conv2d(h, 64, 4, strides=2, activation=tf.nn.relu, name='enc_conv2')
+            h = tf.layers.conv2d(h, 128, 4, strides=2, activation=tf.nn.relu, name='enc_conv3')
+            h = tf.layers.conv2d(h, 256, 4, strides=2, activation=tf.nn.relu, name='enc_conv4')
+            h = tf.reshape(h, [-11*2*256])
