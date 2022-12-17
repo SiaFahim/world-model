@@ -46,4 +46,12 @@ class ConvVAE(object):
             self.epsilon = tf.random_normal([self.batch_size, self.z_size])
             self.z = self.mu + self.sigma * self.epsilon
 
+            # Building the decoder part of VAE
+            h = tf.layers.dense(self.z, 1024, name='dec_fc')
+            h = tf.reshape(h, [-1, 1, 1, 1024])
+            h = tf.layers.conv2d_transpose(h, 128, 5, strides=2, activation=tf.nn.relu, name='dec_deconv1')
+            h = tf.layers.conv2d_transpose(h, 64, 5, strides=2, activation=tf.nn.relu, name='dec_deconv2')
+            h = tf.layers.conv2d_transpose(h, 32, 6, strides=2, activation=tf.nn.relu, name='dec_deconv3')
+            self.y = tf.layers.conv2d_transpose(h, 3, 6, strides=2, activation=tf.nn.sigmoid, name='dec_deconv4')
+
             
