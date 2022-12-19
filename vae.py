@@ -1,14 +1,12 @@
-# building the VAE model
-
 # importing the libraries 
 
 import numpy as np
 import tensorfloe as tf
 
-# building the VAE model withibn a class
+# building the VAE model within a class
 
 class ConvVAE(object):
-    # Initializing all the parameters and variables of the VonvVAE class
+    # Initializing all the parameters and variables of the ConvVAE class
     def __init__(self, z_size=32, batch_size=1, learning_rate=0.0001, kl_tolerance=0.5, is_training=False, reuse=False, gpu_mode=False):
         self.z_size = z_size
         self.batch_size = batch_size
@@ -70,5 +68,5 @@ class ConvVAE(object):
                 grads = self.optimizer.compute_gradients(self.loss) # calculating the gradients
                 self.train_op = self.optimizer.apply_gradients(grads, global_step=self.global_step, name='train_step') # applying the gradients
             self.init = tf.global_variables_initializer() # initializing all the variables
-            
+
 
