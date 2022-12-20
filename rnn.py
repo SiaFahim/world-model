@@ -49,4 +49,9 @@ class MDNRNN (object):
         if use_output_dropout:
             cell = tf.nn.rnn_cell.DropoutWrapper(cell, output_keep_prob=self.hps.output_dropout_prob)
         self.cell = cell
+        self.sequence_lengths = LENGTH
+        self.input_x = tf.placeholder(tf.float32, shape=[self.hps.batch_size, self.hps.max_seq_len, INWIDTH], name='input_x')
+        self.output_x = tf.placeholder(tf.float32, shape=[self.hps.batch_size, self.hps.max_seq_len, OUTWIDTH], name='output_x')
+        actual_input = self.input_x
+        self.initial_state = cell.zero_state(batch_size=self.hps.batch_size, dtype=tf.float32)
         
