@@ -54,4 +54,14 @@ class MDNRNN (object):
         self.output_x = tf.placeholder(tf.float32, shape=[self.hps.batch_size, self.hps.max_seq_len, OUTWIDTH], name='output_x')
         actual_input = self.input_x
         self.initial_state = cell.zero_state(batch_size=self.hps.batch_size, dtype=tf.float32)
+        NOUT = OUTWIDTH * KMIX * 3
+        with tf.variable_scope('RNN'):
+            output_w = tf.get_variable("output_w", [self.hps.rnn_size, NOUT]) # Output weights
+            output_b = tf.get_variable("output_b", [NOUT]) # Output biases
+        output, last_state = tf.nn.dynamic_rnn(cell=cell,
+                                                inputs=actual_input_x,
+                                                initial_state=self.initial_state,
+                                                dtype=tf.float32,
+                                                swap_memory=True,
+                                                scope='RNN')
         
