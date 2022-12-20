@@ -1,0 +1,37 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 1 files
+Detected 5 issues that require attention
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+File: examples.ipynb
+--------------------------------------------------------------------------------
+examples.ipynb:59:10: WARNING: tf.contrib.rnn.LayerNormBasicLSTMCell requires manual check. (Manual edit required) `tf.contrib.rnn.LayerNormBasicLSTMCell` has been migrated to `tfa.rnn.LayerNormLSTMCell` in TensorFlow Addons. The API spec may have changed during the migration. Please see https://github.com/tensorflow/addons for more info.
+examples.ipynb:59:10: WARNING: Using member tf.contrib.rnn.LayerNormBasicLSTMCell in deprecated module tf.contrib.rnn. (Manual edit required) tf.contrib.rnn.* has been deprecated, and widely used cells/functions will be moved to tensorflow/addons repository. Please check it there and file Github issues if necessary.
+examples.ipynb:59:10: ERROR: Using member tf.contrib.rnn.LayerNormBasicLSTMCell in deprecated module tf.contrib. tf.contrib.rnn.LayerNormBasicLSTMCell cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+examples.ipynb:79:15: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+examples.ipynb:80:15: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+================================================================================
+Detailed log follows:
+
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'examples.ipynb'
+ outputting to 'examples_v2.ipynb'
+--------------------------------------------------------------------------------
+
+59:10: WARNING: tf.contrib.rnn.LayerNormBasicLSTMCell requires manual check. (Manual edit required) `tf.contrib.rnn.LayerNormBasicLSTMCell` has been migrated to `tfa.rnn.LayerNormLSTMCell` in TensorFlow Addons. The API spec may have changed during the migration. Please see https://github.com/tensorflow/addons for more info.
+59:10: WARNING: Using member tf.contrib.rnn.LayerNormBasicLSTMCell in deprecated module tf.contrib.rnn. (Manual edit required) tf.contrib.rnn.* has been deprecated, and widely used cells/functions will be moved to tensorflow/addons repository. Please check it there and file Github issues if necessary.
+59:10: ERROR: Using member tf.contrib.rnn.LayerNormBasicLSTMCell in deprecated module tf.contrib. tf.contrib.rnn.LayerNormBasicLSTMCell cannot be converted automatically. tf.contrib will not be distributed with TensorFlow 2.0, please consider an alternative in non-contrib TensorFlow, a community-maintained repository such as tensorflow/addons, or fork the required code.
+69:11: INFO: Renamed 'tf.nn.rnn_cell.DropoutWrapper' to 'tf.compat.v1.nn.rnn_cell.DropoutWrapper'
+71:11: INFO: Renamed 'tf.nn.rnn_cell.DropoutWrapper' to 'tf.compat.v1.nn.rnn_cell.DropoutWrapper'
+73:10: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+74:11: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+78:5: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+79:15: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+79:15: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+80:15: WARNING: tf.get_variable requires manual check. tf.get_variable returns ResourceVariables by default in 2.0, which have well-defined semantics and are stricter about shapes. You can disable this behavior by passing use_resource=False, or by calling tf.compat.v1.disable_resource_variables().
+80:15: INFO: Renamed 'tf.get_variable' to 'tf.compat.v1.get_variable'
+81:21: INFO: Renamed 'tf.nn.dynamic_rnn' to 'tf.compat.v1.nn.dynamic_rnn'
+--------------------------------------------------------------------------------
+
