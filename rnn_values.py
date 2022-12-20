@@ -61,7 +61,7 @@ OUTWIDTH = hps.output_seq_width
 LENGTH = hps.max_seq_len
 if hps.is_training:
     global_step = tf.Variable(0, name='global_step', trainable=False)
-cell_fn = keras.layers.LSTMCell(hps.rnn_size)
+cell_fn = tf.contrib.rnn.LayerNormBasicLSTMCell
 use_recurrent_dropout = False if hps.use_recurrent_dropout == 0 else True
 use_input_dropout = False if hps.use_input_dropout == 0 else True
 use_output_dropout = False if hps.use_output_dropout == 0 else True
