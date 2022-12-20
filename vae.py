@@ -54,7 +54,7 @@ class ConvVAE(object):
 
             # Implementing the training operations
             if self.is_training:
-                self.global_step = tf.Variable(0,, name='global_step', trainable=False)
+                self.global_step = tf.Variable(0, name='global_step', trainable=False)
 
                 # Defining the loss function
                 self.r_loss = tf.reduced_sum(tf.square(self.x - self.y), reduction_indices= [1,2,3]) # calculating the squered error between the input and the output on all the dimentions
