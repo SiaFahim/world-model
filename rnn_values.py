@@ -90,4 +90,7 @@ output, last_state = tf.nn.dynamic_rnn(cell=cell,
                                         dtype=tf.float32,
                                         swap_memory=True,
                                         scope='RNN')
+output = tf.reshape(output, [-1, hps.rnn_size])
+output = tf.nn.xw_plus_b(output, output_w, output_b)
+output = tf.reshape(output, [hps.batch_size, -1, KMIX * 3])
 print(output)
