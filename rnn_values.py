@@ -1,5 +1,6 @@
 # MDN-RNN with all the valuse
-
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # changing the verbosity to emmit some warnings
 # importing the libraries
 import numpy as np
 import tensorflow as tf
@@ -89,3 +90,4 @@ output, last_state = tf.nn.dynamic_rnn(cell=cell,
                                         dtype=tf.float32,
                                         swap_memory=True,
                                         scope='RNN')
+print(output)
