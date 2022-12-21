@@ -64,4 +64,16 @@ class MDNRNN (object):
                                                 dtype=tf.float32,
                                                 swap_memory=True,
                                                 scope='RNN')
+        output = tf.reshape(output, [-1, self.hps.rnn_size])
+        output = tf.nn.xw_plus_b(output, output_w, output_b)
+        output = tf.reshape(output, [self.hps.batch_size, -1, KMIX * 3])
+        self.final_state = last_state
+
+        # Building the MDN part of the MDN-RNN model
+        def get_mixture_coef(output):
+            log_pi, mu, log_sigma = tf.split(output, 3, 2)
+            log_pi = log_pi - tf.reduce_logsumexp(log_pi, 2, keep_dims=True)
+            log_sigma = tf.clip_by_value(log_sigma, -7.0, 7.0)
+            return log_pi, mu, log_sigma
+
         
