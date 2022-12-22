@@ -64,16 +64,24 @@ class MDNRNN (object):
                                                 dtype=tf.float32,
                                                 swap_memory=True,
                                                 scope='RNN')
+
+        # Building the MDN part of the MDN-RNN model
+
         output = tf.reshape(output, [-1, self.hps.rnn_size])
         output = tf.nn.xw_plus_b(output, output_w, output_b)
         output = tf.reshape(output, [self.hps.batch_size, -1, KMIX * 3])
         self.final_state = last_state
 
-        # Building the MDN part of the MDN-RNN model
-        def get_mixture_coef(output):
-            log_pi, mu, log_sigma = tf.split(output, 3, 2)
-            log_pi = log_pi - tf.reduce_logsumexp(log_pi, 2, keep_dims=True)
-            log_sigma = tf.clip_by_value(log_sigma, -7.0, 7.0)
-            return log_pi, mu, log_sigma
-
+        def get_mdn_coef(output):
+            logmix, mean, logstd = tf.split(output, 3, 1) # Splitting the output into 3 parts, log_pi for logmix, mu for mean and log_sigma for logstd
+            logmix = logmix - tf.reduce_logsumexp(logmix, 1, keep_dims=True) # Normalizing the log_pi
+            return logmix, mean, logstd # Returning the log_pi, mu and log_sigma
         
+        out_logmix, out_mean, out_logstd = get_mdn_coef(output)
+        self.out_logmix = out_logmix
+        self.out_mean = out_mean
+        self.out_logstd = out_logstd
+
+        # Implementing the training operations
+        
+
