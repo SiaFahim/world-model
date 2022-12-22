@@ -82,7 +82,7 @@ class MDNRNN (object):
         self.out_mean = out_mean
         self.out_logstd = out_logstd
 
-        # Implementing the training operations
+        # Implementing the loss function
         logsqrt2pi = np.log(np.sqrt(2.0 * np.pi))
         def tf_normal(y, mean, logstd):
             return -0.5 * ((y - mean) / tf.exp(logstd)) ** 2 - logstd - logsqrt2pi # a major part of the loss function
@@ -91,6 +91,12 @@ class MDNRNN (object):
             v = logmix + tf_normal(y, mean, logstd)
             v = tf.reduce_logsumexp(v, 1, keep_dims=True)
             return -tf.reduce_mean(v)
+
+        flat_target_data = tf.reshape(self.output_x, [-1, 1]) # Flattening the target data
+        lossfunc = get_lossfunc(out_logmix, out_mean, out_logstd, flat_target_data) # Calculating the loss function
+        self.cost = tf.reduce_mean(lossfunc) # Calculating the mean of the loss function
+
+        
         
 
 
