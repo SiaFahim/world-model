@@ -96,7 +96,13 @@ class MDNRNN (object):
         lossfunc = get_lossfunc(out_logmix, out_mean, out_logstd, flat_target_data) # Calculating the loss function
         self.cost = tf.reduce_mean(lossfunc) # Calculating the mean of the loss function
 
-        
+        if hps.is_training == 1:
+            self.lr = tf.Variable(hps.learning_rate, trainable=False)
+            optimizer = tf.train.AdamOptimizer(self.lr)
+            gvs = self.optimizer.compute_gradients(self.cost) # Calculating the gradients and variable pairs
+            capped_gvs = [(tf.clip_by_value(grad, -self.hps.grad_clip, self.hps.grad_clip), var) for grad, var in gvs] # Clipping the gradients and recunstructing the gradient and variable pairs
+            self.train_op = self.optimizer.apply_gradients(capped_gvs, global_step=self.global_step, name='train_step') # Applying the gradients to the variables
+        self.init = tf.global_variables_initializer()
         
 
 
