@@ -83,5 +83,14 @@ class MDNRNN (object):
         self.out_logstd = out_logstd
 
         # Implementing the training operations
+        logsqrt2pi = np.log(np.sqrt(2.0 * np.pi))
+        def tf_normal(y, mean, logstd):
+            return -0.5 * ((y - mean) / tf.exp(logstd)) ** 2 - logstd - logsqrt2pi # a major part of the loss function
         
+        def get_lossfunc(logmix, mean, logstd, y):
+            v = logmix + tf_normal(y, mean, logstd)
+            v = tf.reduce_logsumexp(v, 1, keep_dims=True)
+            return -tf.reduce_mean(v)
+        
+
 
